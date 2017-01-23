@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
+        <title>Your title goes here</title>
+        
+        <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' type='text/css' rel='stylesheet'>
+        <script src='https://code.jquery.com/jquery-3.1.1.min.js' integrity='sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=' crossorigin='anonymous'></script>
+        <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+        
+        <!--angular js include-->
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular.min.js' type='text/javascript'></script>
+        <!-- font awesome CDN-->
+        <!--<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' type='text/css' rel='stylesheet' />-->
+        <style type='text/css'>
+            .search-box {
+                width: 600px;
+                padding: 20px;
+                border: solid 1px #f0f0f0;
+                background: #f0f0f0;
+                padding-top: 100px;
+                padding-bottom: 100px;
+                border-radius: 5px;
+            }
+            .custom-control {
+                border: none;
+                box-shadow: 0px 0px 10px 1px silver;
+                transition: ease-in-out .25s all;
+            }
+            .custom-control:active {
+                box-shadow: 0px 0px 10px 1px blueviolet;
+            }
+        </style>
+
+        <script type='text/javascript'>
+            $(document).ready (function (){
+                
+                function adjustSearchBox () {
+                    var width = $(window).width();
+                    var height = $(window).height();
+
+
+                    var alignWidth = (width-600)/2;
+                    var alignHeight = (height-100-$('.search-box').innerHeight())/2;
+                    $('.search-box').css ('margin-left', alignWidth+'px');
+                    $('.search-box').css ('margin-top', alignHeight+'px');
+                }
+
+                $(window).resize(adjustSearchBox);
+                adjustSearchBox();
+
+            });
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <img alt="Brand" src="./img/snippet.png" height=30>
+                </a>
+                </div>
+            </div>
+        </nav>
+
+        <section class='search-box'>
+             <p class='text-center'><img alt="Brand" src="./img/snippet.png" height=100></p>
+             <input type="text" class="form-control custom-control" placeholder="Search Java, Nodejs, AngularJS, bootstrap etc..">
+            <br/>
+            <p class='text-center'><button class='btn btn-default '><span class='glyphicon glyphicon-search'></span>&nbsp;Search</button></p>
+        </section>
+    </body>
+</html>
