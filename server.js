@@ -9,7 +9,7 @@ var parser = require ('body-parser');
 var SnippetsRouter = require ('./routers/snippet-router.js');
 
 app.use (parser.json());
-app.use ('/api', SnippetsRouter);
+app.use ('/api/snippets', SnippetsRouter);
 
 app.get ('/search', function (req, res) {
     res.sendFile (__dirname +'/views/index.html');
