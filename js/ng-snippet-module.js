@@ -80,6 +80,12 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     $scope.languageGroup = [];
 
     $scope.breadcrumbItems = ['Languages'];
+
+    // call this on startup
+    // this load all the available list of languages in the database
+    // and populate languageGroup with array in a pair of 4 to make it
+    // suitable for a grid system to iterate over
+    // Accepts 2 arguments success and error
     languageModuleService.listLanguages ((data) => {
         // success callback
         var response = data.data;
@@ -108,15 +114,26 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         devlogger.error ('Server error '+ JSON.stringify(data), true);
     });
 
-    function getFileContent (fileURL) {
-        return $.ajax ({
+
+    // prive function to read the file content
+    // usually used for reading the HTML components and 
+    // compiling them using $compile service of angularJS (if they contains
+    // angular JS code)
+    function getFileContent (fileURL, asyncCallback) {
+        $.ajax ({
             url: fileURL,
-            async: false
-        }).responseText;
+            async: false,
+            success: asyncCallback
+        });
     }
 
+    // load the snippets
     $scope.showSnippetsFor =  (language) => {
-        $scope.snippets = "snippets";
-        $('.dynamic-content').html ($compile(getFileContent ('/component/testcomponent'))($scope));
+        $scope.snippets = language;
+        getFileContent ('/component/testcomponent', (result) => {
+            devlogger.info ('fetched ');
+            $('.dynamic-content').html ($compile (result)($scope));
+            $scope.breadcrumbItems.push (language);
+        });
     }
 }]);
