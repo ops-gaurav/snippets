@@ -30,6 +30,8 @@ app.get ('/img/:filename', function( req, res) {
 app.get ('/script/:filename', (req, res) => res.sendFile (__dirname+ '/js/'+ req.params.filename));
 app.get ('/stylesheets/:filename', (req, res) => res.sendFile (__dirname+ '/style/'+ req.params.filename));
 
+// html components
+app.get ('/component/:filename', (req, res) => res.sendFile (__dirname +'/views/components/'+ req.params.filename +'.html'));
 
 app.listen (3000, function (success) {
     console.log ('application running on port 3000');

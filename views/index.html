@@ -20,7 +20,7 @@
         <link type='text/css' rel='stylesheet' href='/stylesheets/default.css'/>
     </head>
     <body ng-controller='LangModuleController'>
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-fixed-top app-navbar">
             <div class="container-fluid">
                 <div class="navbar-header">
                 <a class="navbar-brand" href="#">
@@ -29,15 +29,25 @@
                 </div>
             </div>
         </nav>
-
-        <section class='container' ng-repeat='lang in languageGroup'>
-            <section class='row' ng-repeat='group in languageGroup'>
-                <section class='col-md-3 card' ng-repeat='lang in group'>
-                    <section class='card-text'>
-                        <p class='text-center'>{{lang}}</p>
+        <br/><br/><br/><br/>
+        
+        <ol class="breadcrumb">
+            <li ng-repeat='item in breadcrumbItems' ng-class="{{item == breadcrumbItems[breadcrumbItems.length-1] ? 'active' : ''}}">
+                <a href="#">{{item}}</a>
+            </li>
+        </ol>
+        
+        <section class='dynamic-content'>
+            <section class='container' ng-repeat='lang in languageGroup'>
+                <section class='row' ng-repeat='group in languageGroup'>
+                    <section class='col-md-3 card' ng-repeat='lang in group'>
+                        <section class='card-text' ng-click='showSnippetsFor(lang)'>
+                            <p class='text-center'>{{lang}}</p>
+                        </section>
                     </section>
                 </section>
             </section>
         </section>
+
     </body>
 </html>

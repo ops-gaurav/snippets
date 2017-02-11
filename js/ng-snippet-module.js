@@ -73,11 +73,13 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
 /**
  * controller for langugae based actions
  */
-langModule.controller ('LangModuleController', ['$scope', 'languageModuleService', 'devlogger', function ($scope, languageModuleService, devlogger){
+langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageModuleService', 'devlogger', function ($scope, $compile, languageModuleService, devlogger){
     
     // the grid contains the items as columns of 4 => 4 languages in a row.
     // to make results iterable in angularJS, adding them in the group of 4 items as array in an array
     $scope.languageGroup = [];
+
+    $scope.breadcrumbItems = ['Languages'];
     languageModuleService.listLanguages ((data) => {
         // success callback
         var response = data.data;
@@ -105,4 +107,16 @@ langModule.controller ('LangModuleController', ['$scope', 'languageModuleService
         // error callback
         devlogger.error ('Server error '+ JSON.stringify(data), true);
     });
+
+    function getFileContent (fileURL) {
+        return $.ajax ({
+            url: fileURL,
+            async: false
+        }).responseText;
+    }
+
+    $scope.showSnippetsFor =  (language) => {
+        $scope.snippets = "snippets";
+        $('.dynamic-content').html ($compile(getFileContent ('/component/testcomponent'))($scope));
+    }
 }]);

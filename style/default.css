@@ -1,3 +1,7 @@
+.app-navbar {
+    background: #fafafa;
+    border: solid 1px #f0f0f0;
+}
 .card {
     transition: ease-in-out .25s all;
     border-radius: 3px;
