@@ -1,8 +1,6 @@
-var mongoose = require ('mongoose');
-var Schema = mongoose.Schema;
-
-var data = {
-    schema: Schema
+var config = {
+    host: 'localhost',
+    db: 'real-time'
 };
 
-module.exports = data;
+module.exports = config;

@@ -27,6 +27,9 @@ app.get ('/img/:filename', function( req, res) {
     var filename = req.params.filename;
     res.sendFile (__dirname +'/img/'+filename);
 });
+app.get ('/script/:filename', (req, res) => res.sendFile (__dirname+ '/js/'+ req.params.filename));
+app.get ('/stylesheets/:filename', (req, res) => res.sendFile (__dirname+ '/style/'+ req.params.filename));
+
 
 app.listen (3000, function (success) {
     console.log ('application running on port 3000');

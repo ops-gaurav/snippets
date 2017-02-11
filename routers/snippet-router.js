@@ -15,6 +15,8 @@ var LanguageModule = mongoose.model ('snippets', LanguageModuleModel);
  *  nodejs etc
  */
 
+var config = require ('../data/data.js');
+
 /**
  * find the snippet with id snippetId under the language module languageType
  */
@@ -74,6 +76,33 @@ router.get ('/lookup_lang/:languageType', function (req, res) {
 
         mongoose.disconnect ();
     }
+});
+
+// router to lookup all the languages in the database
+// returns the list of language names as array
+router.get ('/languages', (req, res) => {
+    res.type ('json');
+
+    mongoose.prommise = es6Promise;
+
+    mongoose.connect (config.host, config.db);
+
+    LanguageModule.find ({}, (err, rawData) => {
+        if (!err) {
+            if (rawData) {
+                var resData = [];
+                rawData.forEach ((obsolete, value, raw) => {
+                    resData.push (obsolete.name);
+                });
+
+                res.send ({status: 'success', data: resData});
+                mongoose.disconnect();
+            }
+        } else {
+            mongoose.disconnect ();
+            res.send ({status:'error', message: 'server error'});
+        }
+    });
 });
 
 // api to create a new snippet. The request will also create a
