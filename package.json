@@ -24,6 +24,7 @@
   "homepage": "https://github.com/sharma02gaurav/snippets#readme",
   "dependencies": {
     "body-parser": "^1.16.1",
+    "es6-promise": "^4.0.5",
     "express": "^4.14.1",
     "gulp": "^3.9.1",
     "gulp-minify": "0.0.15",

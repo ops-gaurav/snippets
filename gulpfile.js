@@ -17,6 +17,7 @@ gulp.task ('build-stylesheets', () => {
 });
 
 
+//https://www.npmjs.com/package/gulp-minify
 // minify the javascript files and stylesheets and html files
 gulp.task ('minify-scripts', () => {
 
