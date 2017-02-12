@@ -8,7 +8,7 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
         listLanguages: (successCallback, errorCallback) => {
             $http({
                 method: 'GET',
-                url: 'http://localhost:3000/api/snippets/languages'
+                url: '/api/snippets/languages'
             }).then (successCallback, errorCallback);
         },
         /**
@@ -132,6 +132,10 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         $scope.snippets = language;
         getFileContent ('/component/testcomponent', (result) => {
             devlogger.info ('fetched ');
+
+            // fetch the snippets for language and init snippetGroup
+            languageModuleService.
+
             $('.dynamic-content').html ($compile (result)($scope));
             $scope.breadcrumbItems.push (language);
         });
