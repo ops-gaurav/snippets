@@ -1,0 +1,33 @@
+{
+  "name": "snippets",
+  "version": "1.0.0",
+  "description": "A simple application for creating and saving small program snippets and use (re-use) them later",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "gulp test-system"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharma02gaurav/snippets.git"
+  },
+  "keywords": [
+    "snippets",
+    "nodejs",
+    "gulp",
+    "sasss"
+  ],
+  "author": "gaurav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sharma02gaurav/snippets/issues"
+  },
+  "homepage": "https://github.com/sharma02gaurav/snippets#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "gulp": "^3.9.1",
+    "gulp-minify": "0.0.15",
+    "gulp-sass": "^3.1.0",
+    "mongoose": "^4.8.2"
+  }
+}

@@ -1,5 +1,10 @@
 var gulp = require ('gulp');
 var sass = require ('gulp-sass');
+var minify = require ('gulp-minify');
+
+gulp.task ('test-system', () => {
+    console.log ('system is up and running..');
+});
 
 gulp.task ('default', () => {
 });
@@ -13,6 +18,6 @@ gulp.task ('build-stylesheets', () => {
 
 
 // minify the javascript files and stylesheets and html files
-glup.task ('minify-scripts', () => {
+gulp.task ('minify-scripts', () => {
 
 });
