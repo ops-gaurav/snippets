@@ -79,6 +79,19 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     // to make results iterable in angularJS, adding them in the group of 4 items as array in an array
     $scope.languageGroup = [];
 
+
+    // THIS ASSIGNMENT IS EXPERIMENTAL... REMOVE IT LATER
+    $scope.languageGroup.push (['java', 'javascript', 'nodejs', 'C#'], ['CSS', 'Ruby']);
+
+    $scope.serialLanguages = [];
+    $scope.languageGroup.forEach ((obsolete, index, raw) => {
+        obsolete.forEach ((obs, ind, rw) => {
+            $scope.serialLanguages.push (obs);
+        });
+    });
+
+    devlogger.info ($scope.serialLanguages, true);
+
     $scope.breadcrumbItems = ['Languages'];
 
     // call this on startup
@@ -139,5 +152,9 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
             $('.dynamic-content').html ($compile (result)($scope));
             $scope.breadcrumbItems.push (language);
         });
+    }
+    
+    $scope.newSnippet = (langName, snippet) => {
+        
     }
 }]);
