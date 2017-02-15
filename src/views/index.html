@@ -33,7 +33,6 @@
 		<br/><br/><br/><br/>
 
 		<section class='container'>
-
 			<a class='btn btn-success btn-sm' data-toggle='modal' href='#create-modal'>
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; New snippet
 			</a><br/><br/>
@@ -65,7 +64,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">Create new language</h4>
+						<h4 class="modal-title">Add new language</h4>
 					</div>
 					<div class="modal-body">
 						<!-- show a dropdown to list the number of languages and 
@@ -80,7 +79,8 @@
 								<li ng-repeat='lang in serialLanguages'><a href='#' >{{lang}}</a></li>
 								<li><a href="#">Create new</a></li>
 							</ul>
-						</div>
+						</div><br/><br/>
+						<textarea class='form-control' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
