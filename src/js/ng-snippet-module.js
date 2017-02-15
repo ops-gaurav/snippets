@@ -78,20 +78,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     // the grid contains the items as columns of 4 => 4 languages in a row.
     // to make results iterable in angularJS, adding them in the group of 4 items as array in an array
     $scope.languageGroup = [];
-
-
-    // THIS ASSIGNMENT IS EXPERIMENTAL... REMOVE IT LATER
-    $scope.languageGroup.push (['java', 'javascript', 'nodejs', 'C#'], ['CSS', 'Ruby']);
-
     $scope.serialLanguages = [];
-    $scope.languageGroup.forEach ((obsolete, index, raw) => {
-        obsolete.forEach ((obs, ind, rw) => {
-            $scope.serialLanguages.push (obs);
-        });
-    });
-
-    devlogger.info ($scope.serialLanguages, true);
-
     $scope.breadcrumbItems = ['Languages'];
 
     // call this on startup
@@ -110,6 +97,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
             languages.forEach ((obsolete, index, raw) => {
                 items.push (obsolete);
                 index++;
+                $scope.serialLanguages.push (obsolete);
                 if (index == 4) {
                     $scope.languageGroup.push (items);
                     index = 0;
@@ -117,8 +105,11 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
                 }
             });
             $scope.languageGroup.push (items);
+            $scope.editorModel = {
+                lang: $scope.serialLanguages[0]
+            };
 
-            devlogger.info ($scope.languageGroup.length + ' item(s) in group');
+            devlogger.info ($scope.editorModel.lang, true);
         } else {
             devlogger.error ('no response fetched'+ JSON.stringify(response), true);
         }
@@ -126,8 +117,6 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         // error callback
         devlogger.error ('Server error '+ JSON.stringify(data), true);
     });
-
-
     // prive function to read the file content
     // usually used for reading the HTML components and 
     // compiling them using $compile service of angularJS (if they contains
@@ -138,6 +127,10 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
             async: false,
             success: asyncCallback
         });
+    }
+
+    $scope.setEditorLang = (lang) => {
+        $scope.editorModel.lang = lang;
     }
 
     // load the snippets
@@ -154,6 +147,8 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         });
     }
     
+
+    // creaets a new snippet
     $scope.newSnippet = (langName, snippet) => {
         
     }

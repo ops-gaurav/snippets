@@ -3,7 +3,7 @@
 	<head>
 		<meta charset='UTF-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
-		<title>Your title goes here</title>
+		<title>Snippets</title>
 
 		<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' type='text/css' rel='stylesheet'>
 		<script src='https://code.jquery.com/jquery-3.1.1.min.js' integrity='sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=' crossorigin='anonymous'></script>
@@ -13,6 +13,8 @@
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular.min.js' type='text/javascript'></script>
 		<!-- font awesome CDN-->
 		<!--<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' type='text/css' rel='stylesheet' />-->
+
+		<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
 
 		<!--using an angular logging service developed by me -->
 		<script type='text/javascript' src='https://rawgit.com/sharma02gaurav/ng-dev-logger/master/ng-dev-module.js'></script>
@@ -57,8 +59,6 @@
 			</section>
 		</section>
 
-
-		<!--<a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Trigger modal</a>-->
 		<div class="modal fade" id="create-modal">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -70,17 +70,22 @@
 						<!-- show a dropdown to list the number of languages and 
 						one another option to add a new language
 						-->
-						<div class="btn-group" role="group" ng-init='selected=serialLanguages[0]'>
-							<button type="button" ng-bind='selected' class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Language: <b ng-bind='selected'></b>
+
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Select Language: <b ng-bind='editorModel.lang'>{{editorModel.lang}}</b>
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<li ng-repeat='lang in serialLanguages'><a href='#' >{{lang}}</a></li>
-								<li><a href="#">Create new</a></li>
+								<li ng-repeat='lang in serialLanguages' 
+									ng-click='setEditorLang (lang)'>
+									<a href='#' >{{lang}}</a>
+								</li>
+								<li ng-click='setEditorLang ("Add new")'><a href="#"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create new</a></li>
 							</ul>
 						</div><br/><br/>
-						<textarea class='form-control' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
+						<input class='form-control' placeholder="Enter new language" ng-hide='editorModel.lang != "Add new"' /><br/>
+						<textarea class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
@@ -89,6 +94,5 @@
 				</div>
 			</div>
 		</div>
-
 	</body>
 </html>
