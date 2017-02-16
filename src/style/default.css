@@ -1,6 +1,11 @@
 .app-navbar {
     background: #fafafa;
     border: solid 1px #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 .card {
     transition: ease-in-out .25s all;

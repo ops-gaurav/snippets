@@ -57,7 +57,22 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
          *      }
          * }
          */
-        createSnippet: (lang) => {},
+        createSnippet: (lang, successCallbak, errorCallback) => {
+            var payload = {
+                snippet: {
+                    title: lang.title,
+                    snippet: lang.snippet
+                }
+            };
+
+            var apiURL = '/api/snippets/create/'+ lang.name + '/';
+
+            $http({
+                method: 'POST',
+                url: apiURL,
+                data: payload
+            }).then (successCallbak, errorCallback);
+        },
         /**
          * DELETE /api/snippets/delete_lang/:langName
          */
@@ -148,8 +163,25 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     }
     
 
-    // creaets a new snippet
-    $scope.newSnippet = (langName, snippet) => {
-        
+    // START FROM HERE
+    // creates a new snippetGroup
+    $scope.newSnippet = (langName, title, snippet) => {
+
+        // fetch the form values
+        var lang = {
+            name: langName,
+            title: title,
+            snippet: snippet
+        };
+        languageModuleService.createSnippet (lang, (successData) => {
+            var response = successData.data;
+            if (response.status == 'success') {
+                devlogger.log (successData);
+            } else {
+                devlogger.error ('Some server error');
+            }
+        }, (errData) => {
+            devlogger.error (JSON.stringify (errData));
+        });
     }
 }]);

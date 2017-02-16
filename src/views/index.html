@@ -20,18 +20,14 @@
 		<script type='text/javascript' src='https://rawgit.com/sharma02gaurav/ng-dev-logger/master/ng-dev-module.js'></script>
 		<script type='text/javascript' src='/script/ng-snippet-module.js'></script>
 		<link type='text/css' rel='stylesheet' href='/stylesheets/default.css'/>
-	</head>
 
+		<!-- IMPORT SAMPLE ANIMATION CSSS-->
+
+	</head>
 	<body ng-controller='LangModuleController'>
-		<nav class="navbar navbar-default navbar-fixed-top app-navbar">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">
-						<img alt="Brand" src="./img/snippet.png" height=30>
-					</a>
-				</div>
-			</div>
-		</nav>
+		<header class='app-navbar'>
+			<img alt="Brand" src="./img/snippet.png" height=30>
+		</header>
 		<br/><br/><br/><br/>
 
 		<section class='container'>
@@ -70,9 +66,8 @@
 						<!-- show a dropdown to list the number of languages and 
 						one another option to add a new language
 						-->
-
 						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Select Language: <b ng-bind='editorModel.lang'>{{editorModel.lang}}</b>
 								<span class="caret"></span>
 							</button>
@@ -85,12 +80,17 @@
 							</ul>
 						</div><br/><br/>
 						<input class='form-control' placeholder="Enter new language" ng-hide='editorModel.lang != "Add new"' /><br/>
+						<input class='form-control' placeholder="A description that describes this snippet"/> <br/>
 						<textarea class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
+<<<<<<< HEAD
 						<!--  push to server-->
 						<button type="button" class="btn btn-primary btn-sm">Create</button>
+=======
+						<button type="button" class="btn btn-primary btn-sm">Create&nbsp;<span class='glyphicon glyphicon-time'></span></button>
+>>>>>>> 1ff409175b993729a4f9ec429cae303015ecd20e
 					</div>
 				</div>
 			</div>
