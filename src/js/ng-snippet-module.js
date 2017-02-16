@@ -140,7 +140,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
             devlogger.info ('fetched ');
 
             // fetch the snippets for language and init snippetGroup
-            languageModuleService.
+            //languageModuleService.
 
             $('.dynamic-content').html ($compile (result)($scope));
             $scope.breadcrumbItems.push (language);

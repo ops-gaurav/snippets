@@ -1,6 +1,6 @@
 /**
  * this is the server where the main work is being done
- * it handles all the routing related to the project
+ * it handless all the routing related to the project
  */
 var express = require ('express');
 var app = express ();
