@@ -14,8 +14,8 @@
 		<!-- font awesome CDN-->
 		<!--<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' type='text/css' rel='stylesheet' />-->
 
-		<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
-
+		<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Nunito" rel="stylesheet">
+		
 		<!--using an angular logging service developed by me -->
 		<script type='text/javascript' src='https://rawgit.com/sharma02gaurav/ng-dev-logger/master/ng-dev-module.js'></script>
 		<script type='text/javascript' src='/script/ng-snippet-module.js'></script>
@@ -79,21 +79,23 @@
 								<li ng-click='setEditorLang ("Add new")'><a href="#"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create new</a></li>
 							</ul>
 						</div><br/><br/>
-						<input class='form-control' placeholder="Enter new language" ng-hide='editorModel.lang != "Add new"' /><br/>
-						<input class='form-control' placeholder="A description that describes this snippet"/> <br/>
-						<textarea class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
+						<input ng-model='langName' class='form-control' placeholder="Enter new language" ng-hide='editorModel.lang != "Add new"' /><br/>
+						<input ng-model='title' class='form-control' placeholder="A description that describes this snippet"/> <br/>
+						<textarea ng-model='snippet' class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
-<<<<<<< HEAD
 						<!--  push to server-->
-						<button type="button" class="btn btn-primary btn-sm">Create</button>
-=======
-						<button type="button" class="btn btn-primary btn-sm">Create&nbsp;<span class='glyphicon glyphicon-time'></span></button>
->>>>>>> 1ff409175b993729a4f9ec429cae303015ecd20e
+						<button type="button" class="btn btn-primary btn-sm" ng-click='newSnippet(langName, title, snippet)'>Create</button>
+						<p class='create-info text-center'></p>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<!-- show loading-->
+		<section class='abs-container-loading'>
+				<section class="loader-container"><p class="loader"></p></section>
+		</section>
 	</body>
 </html>

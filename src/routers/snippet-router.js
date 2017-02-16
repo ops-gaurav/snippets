@@ -7,6 +7,8 @@ var router = app.Router();
 var mongoose = require ('mongoose');
 var es6Promise = require ('es6-promise').Promise;
 
+var config = require ('./data/data');
+
 var LanguageModuleModel = require ('../schemas/language-module-model.js');
 var LanguageModule = mongoose.model ('snippets', LanguageModuleModel);
 /**
@@ -27,7 +29,7 @@ router.get ('/lookup_snippet/:languageType/:snippetId', (req, res) => {
     var snippetId = req.params.snippetId;
 
     mongoose.Promise = es6Promise;
-    mongoose.connect ('localhost', 'real-time');
+    mongoose.connect (data.host, data.db);
 
     LanguageModule.findOne ({name: languageType}, (err, doc) => {
         if (err) {
@@ -45,6 +47,35 @@ router.get ('/lookup_snippet/:languageType/:snippetId', (req, res) => {
             } else {
                 mongoose.disconnect();
                 res.send ({status: 'error', message: 'No language found with name '+ languageType});
+            }
+        }
+    });
+});
+
+// fetch all the snippets inside the language collection :labg
+router.get ('/snippets/:lang', (req, res) => {
+    res.type ('json');
+
+    var langName = req.params.lang;
+
+    mongoose.Promise = es6Promise;
+    mongoose.connect (data.host, data.db);
+
+    LanguageModule.findOne ({name: langName}, (err, doc) => {
+        if (err) {
+            res.send ({status :'error', message: 'some server error'});
+        } else {
+            if (doc) {
+                var snippets = [];
+                doc.snippets.forEach ((obs, index, raw) => {
+                    snippets.push (obs);
+                });
+
+                res.send ({status: 'success', message: 'success fetching data', data: snippets});
+                mongoose.disconnect(0);
+            } else {
+                res.send ({status: 'error', message: 'No language found with name '+ langName});
+                mongoose.disconnect ();
             }
         }
     });
@@ -251,7 +282,7 @@ router.delete ('/delete_lang/:languageName', function (req, res) {
 
 // api call to delete a snippet uneder language :lang and having id :sId
 // UNTESTED
-router.delete ('/delete_snippet/:lang/:sId', (req, res) =>{
+router.delete ('/delete_snippet/:lang/:sId', (req, res) => {
     const lang = req.params.lang;
     const snippetId = req.params.sId;
 
@@ -259,7 +290,7 @@ router.delete ('/delete_snippet/:lang/:sId', (req, res) =>{
     mongoose.Promise = es6Promise;
     mongoose.connect ('localhost', 'real-time');
 
-    LanguageModule.findOne ({name: lang}, (err, doc) => {
+    LanguageModule.findOne ({name: lang}, (err, doc) => { 
         if (err)
             res.send (eResponse('Server error'));
         else {

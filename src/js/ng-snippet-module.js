@@ -32,6 +32,9 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
          * find a snippet unser language lang and snippet id sId
          * GET /lookup_snippet/:langName/:sId
          */
+         getSnippets: (lang) => {
+            
+         },
         findSnippet: (lang, sID) => {},
         /**
          * supported doc format is
@@ -150,7 +153,10 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
 
     // load the snippets
     $scope.showSnippetsFor =  (language) => {
-        $scope.snippets = language;
+        $scope.snippets = language;\
+
+
+
         getFileContent ('/component/testcomponent', (result) => {
             devlogger.info ('fetched ');
 
@@ -162,10 +168,28 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         });
     }
     
+    // play the animation loading
+    function _playLoading () {
+        devlogger.info ('loading animation');
+        $('.abs-container-loading').css({display: 'block'});
+        $('.abs-container-loading').animate ({
+            opacity: 0
+        }, 300);
+    }
+
+    // stop the animation loading
+    function _stopLoading () {
+        devlogger.info ('done loading');
+        $('.abs-container-loading').animate ({opacity: 0}, 300, () => {
+            $('.abs-container-loading').css ({display: 'none'});
+        });
+    }
 
     // START FROM HERE
     // creates a new snippetGroup
     $scope.newSnippet = (langName, title, snippet) => {
+
+        _playLoading();
 
         // fetch the form values
         var lang = {
@@ -174,14 +198,31 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
             snippet: snippet
         };
         languageModuleService.createSnippet (lang, (successData) => {
+            _stopLoading();
+
             var response = successData.data;
             if (response.status == 'success') {
-                devlogger.log (successData);
+                $('.create-info').html ('Language added');
+                setTimeout (() => {
+                    $('#create-modal').modal ('hide');
+                    location.reload ();
+                }, 2000);
+
             } else {
-                devlogger.error ('Some server error');
+                ('.create-info').html ('Server error');
+                setTimeout (() => {
+                    $('#create-modal').modal ('hide');
+                    location.reload ();
+                }, 2000);
             }
         }, (errData) => {
-            devlogger.error (JSON.stringify (errData));
+            _stopLoading();
+
+            $('.create-info').html ('Error connecting with server');
+            setTimeout (() => {
+                    $('#create-modal').modal ('hide');
+                    location.reload ();
+                }, 2000);
         });
     }
 }]);
