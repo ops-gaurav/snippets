@@ -153,7 +153,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
 
     // load the snippets
     $scope.showSnippetsFor =  (language) => {
-        $scope.snippets = language;\
+        $scope.snippets = language;
 
 
 

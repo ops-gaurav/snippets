@@ -7,7 +7,7 @@ var router = app.Router();
 var mongoose = require ('mongoose');
 var es6Promise = require ('es6-promise').Promise;
 
-var config = require ('./data/data');
+var config = require ('../data/data');
 
 var LanguageModuleModel = require ('../schemas/language-module-model.js');
 var LanguageModule = mongoose.model ('snippets', LanguageModuleModel);
@@ -63,6 +63,7 @@ router.get ('/snippets/:lang', (req, res) => {
 
     LanguageModule.findOne ({name: langName}, (err, doc) => {
         if (err) {
+            mongoose.disconnet ();
             res.send ({status :'error', message: 'some server error'});
         } else {
             if (doc) {

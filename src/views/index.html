@@ -79,14 +79,14 @@
 								<li ng-click='setEditorLang ("Add new")'><a href="#"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create new</a></li>
 							</ul>
 						</div><br/><br/>
-						<input ng-model='langName' class='form-control' placeholder="Enter new language" ng-hide='editorModel.lang != "Add new"' /><br/>
+						<input ng-model='editorModel.lang' class='form-control' value='editorModel.lang' placeholder="Enter new language" ng-hide='editorModel.lang != "Add new"' /><br/>
 						<input ng-model='title' class='form-control' placeholder="A description that describes this snippet"/> <br/>
 						<textarea ng-model='snippet' class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
 						<!--  push to server-->
-						<button type="button" class="btn btn-primary btn-sm" ng-click='newSnippet(langName, title, snippet)'>Create</button>
+						<button type="button" class="btn btn-primary btn-sm" ng-click='newSnippet(editorModel.lang, title, snippet)'>Create</button>
 						<p class='create-info text-center'></p>
 					</div>
 				</div>

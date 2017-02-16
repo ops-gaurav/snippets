@@ -33,6 +33,7 @@
     border: solid 1px #c3e49c ;
     border-radius: 5px;
     padding: 30px;
+    font-size: 23px;
     transition: ease-in-out .25s all;
 }
 
