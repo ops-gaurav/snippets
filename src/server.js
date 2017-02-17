@@ -11,7 +11,7 @@ var SnippetsRouter = require ('./routers/snippet-router.js');
 app.use (parser.json());
 app.use ('/api/snippets', SnippetsRouter);
 
-app.get ('/search', function (req, res) {
+app.get ('/snippets', function (req, res) {
     res.sendFile (__dirname +'/views/index.html');
 });
 
@@ -32,6 +32,7 @@ app.get ('/stylesheets/:filename', (req, res) => res.sendFile (__dirname+ '/styl
 
 // html components
 app.get ('/component/:filename', (req, res) => res.sendFile (__dirname +'/views/components/'+ req.params.filename +'.html'));
+app.get ('/detail', (req, res) => res.sendFile (__dirname + '/views/content-detail.html'));
 
 app.listen (3000, function (success) {
     console.log ('application running on port 3000');

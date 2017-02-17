@@ -168,8 +168,6 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     // load the snippets
     // load the UI components for the lang module and 
     $scope.showSnippetsFor =  (language) => {
-        $scope.snippets = language;
-
         getFileContent ('/component/snippets-listing', (result) => {
             devlogger.info ('fetched');
             languageModuleService.getSnippets (language, (data) => {
@@ -200,6 +198,13 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
                 devlogger.error ('Error '+ data);
             });
         });
+    }
+
+
+    // load the individual snippet
+    // also update the breadcrumbs
+    $scope.showSnippet = (id) => {
+        
     }
     
     // play the animation loading

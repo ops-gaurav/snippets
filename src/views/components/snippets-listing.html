@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
 	<li ng-repeat='item in breadcrumbItems' ng-class="{{item == breadcrumbItems[breadcrumbItems.length-1] ? 'active' : ''}}">
-		<a href="#" ng-click='handleBreadcrumbs (item)'>{{item}}</a>
+		<button  class='btn btn-link' ng-click='handleBreadcrumbs (item)'>{{item}}</button>
 	</li>
 </ol>
 <section class='container'>
