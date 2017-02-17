@@ -35,23 +35,8 @@
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; New snippet
 			</a><br/><br/>
 
-			<ol class="breadcrumb">
-
-				<li ng-repeat='item in breadcrumbItems' ng-class="{{item == breadcrumbItems[breadcrumbItems.length-1] ? 'active' : ''}}">
-					<a href="#">{{item}}</a>
-				</li>
-			</ol>
-
 			<section class='dynamic-content'>
-				<section class='container'>
-					<section class='row' ng-repeat='group in languageGroup'>
-						<section class='col-md-3 card' ng-repeat='lang in group'>
-							<section class='card-text' ng-click='showSnippetsFor(lang)'>
-								<p class='text-center'>{{lang}}</p>
-							</section>
-						</section>
-					</section>
-				</section>
+				<!-- load content dynamically here -->
 			</section>
 		</section>
 
@@ -60,7 +45,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">Add new language</h4>
+						<h4 class="modal-title">Add new Snippetq	</h4>
 					</div>
 					<div class="modal-body">
 						<!-- show a dropdown to list the number of languages and 
@@ -68,7 +53,7 @@
 						-->
 						<div class="btn-group" role="group">
 							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Select Language: <b ng-bind='editorModel.lang'>{{editorModel.lang}}</b>
+								Select Language: <b ng-bind='editorModel.lang'>{{breadcrumbItems[0]}}</b>
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
@@ -79,14 +64,14 @@
 								<li ng-click='setEditorLang ("Add new")'><a href="#"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create new</a></li>
 							</ul>
 						</div><br/><br/>
-						<input ng-model='editorModel.lang' class='form-control' value='editorModel.lang' placeholder="Enter new language" ng-hide='editorModel.lang != "Add new"' /><br/>
+						<input ng-model='lang' ng-bind='editorModel.lang' class='form-control' value='editorModel.lang' placeholder="Enter new language" ng-hide='editorModel.lang != "Add new"' /><br/>
 						<input ng-model='title' class='form-control' placeholder="A description that describes this snippet"/> <br/>
 						<textarea ng-model='snippet' class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
 						<!--  push to server-->
-						<button type="button" class="btn btn-primary btn-sm" ng-click='newSnippet(editorModel.lang, title, snippet)'>Create</button>
+						<button type="button" class="btn btn-primary btn-sm" ng-click='newSnippet(lang, title, snippet)'>Create</button>
 						<p class='create-info text-center'></p>
 					</div>
 				</div>

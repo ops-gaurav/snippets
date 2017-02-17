@@ -17,7 +17,7 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
          */
         findLang: (langName) => {
             $http ({
-                mathod: 'GET',
+                method: 'GET',
                 url: '/api/snippets/lookup_lang/:'+ langName
             }).then (function successCallback(data){
                 // success happens here
@@ -29,11 +29,14 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
         },
         /**
          * http:// GET
-         * find a snippet unser language lang and snippet id sId
-         * GET /lookup_snippet/:langName/:sId
+         * find a snippet unser language lang
+         * GET /lookup_snippet/:langName
          */
-         getSnippets: (lang) => {
-            
+         getSnippets: (lang, successCallback, errorCallback) => {
+            $http ({
+                method: 'GET',
+                url: '/api/snippets/getSnippets/'+ lang
+            }). then (successCallback, errorCallback);;
          },
         findSnippet: (lang, sID) => {},
         /**
@@ -99,6 +102,8 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     $scope.serialLanguages = [];
     $scope.breadcrumbItems = ['Languages'];
 
+    showHome();
+
     // call this on startup
     // this load all the available list of languages in the database
     // and populate languageGroup with array in a pair of 4 to make it
@@ -112,10 +117,10 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
             var languages = response.data;
             var index = 0;
             var items = [];
-            languages.forEach ((obsolete, index, raw) => {
-                items.push (obsolete);
+            languages.forEach ((actual, index, raw) => {
+                items.push (actual);
                 index++;
-                $scope.serialLanguages.push (obsolete);
+                $scope.serialLanguages.push (actual.name);
                 if (index == 4) {
                     $scope.languageGroup.push (items);
                     index = 0;
@@ -151,20 +156,49 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         $scope.editorModel.lang = lang;
     }
 
+
+    function showHome () {
+        getFileContent ('/component/lang-homepage', (result) => {
+            devlogger.info (result);
+            $('.dynamic-content').html ($compile (result)($scope));
+            for (var i=1; i< $scope.breadcrumbItems.length; i++)
+                $scope.breadcrumbItems.pop (i);
+        });
+    }
     // load the snippets
+    // load the UI components for the lang module and 
     $scope.showSnippetsFor =  (language) => {
         $scope.snippets = language;
 
+        getFileContent ('/component/snippets-listing', (result) => {
+            devlogger.info ('fetched');
+            languageModuleService.getSnippets (language, (data) => {
+                var response = data.data;
+                if (response.status == 'success') {
+                    $scope.snippetsGroup = [];
 
+                    var nestGroup = [];
+                    var index = 0;
+                    response.data.forEach ((actual, index, raw) => {
+                        nestGroup[index++] = actual;
+                        if (index == 4) {
+                            $scope.snippetsGroup.push (nestGroup);
+                            index = 0;
+                            nestGroup = [];
+                        }
+                    });
 
-        getFileContent ('/component/testcomponent', (result) => {
-            devlogger.info ('fetched ');
+                    $scope.snippetsGroup.push (nestGroup);
+                    devlogger.info (JSON.stringify (response.data));
 
-            // fetch the snippets for language and init snippetGroup
-            //languageModuleService.
-
-            $('.dynamic-content').html ($compile (result)($scope));
-            $scope.breadcrumbItems.push (language);
+                    $('.dynamic-content').html ($compile (result)($scope));
+                    $scope.breadcrumbItems.push (language);
+                }
+                else
+                    devlogger.error ('Error : '+ response.message);
+            },(data) => {
+                devlogger.error ('Error '+ data);
+            });
         });
     }
     
@@ -224,5 +258,27 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
                     location.reload ();
                 }, 2000);
         });
+    }
+
+    // handle the page navigation of breadcrumbs
+    $scope.handleBreadcrumbs = (clicked) => {
+        var clikedIndex = -1;
+
+        $scope.breadcrumbItems.map ((value, index) => {
+            if (value == clicked) {
+                clickedIndex = index;
+                return;
+            }
+        });
+
+        if (clickedIndex == 0) {
+            // home
+            showHome ();
+        } else if (clickedIndex == 1) {
+            // home for specific language
+        } else if (clickedIndex == 2) {
+            // reload the current page (this is the only situtation when a user
+            // is in the exact same page that user requests)
+        }
     }
 }]);

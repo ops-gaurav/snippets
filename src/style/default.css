@@ -27,20 +27,34 @@
     box-shadow: none;
 }
 
-.card-text {
+.card-text, .snippet-title-text {
+    position: relative;
     background: #dcf8bb;
     color: #383838;
     border: solid 1px #c3e49c ;
     border-radius: 5px;
     padding: 30px;
-    font-size: 23px;
     transition: ease-in-out .25s all;
 }
-
+.card-text .lang-title {
+    font-size: 23px;
+}
+.lang-sub {
+    color: #769064;
+    display: block;
+}
+.del-icon {
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+}
+.snippet-title-text {
+    background: #CBE3EE;
+    border: solid 1px  #98C8DE;
+}
 .body-content {
     padding: 10px;
 }
-
 .add-btn {
     height: 40px;
     width: 40px;

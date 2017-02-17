@@ -17,7 +17,7 @@ var LanguageModule = mongoose.model ('snippets', LanguageModuleModel);
  *  nodejs etc
  */
 
-var config = require ('../data/data.js');
+var data = require ('../data/data.js');
 
 /**
  * find the snippet with id snippetId under the language module languageType
@@ -33,6 +33,7 @@ router.get ('/lookup_snippet/:languageType/:snippetId', (req, res) => {
 
     LanguageModule.findOne ({name: languageType}, (err, doc) => {
         if (err) {
+            mongoose.disconnect ();
             res.send ({status: 'error', message: 'Some server error'});
         } else {
             if (doc) {
@@ -53,7 +54,7 @@ router.get ('/lookup_snippet/:languageType/:snippetId', (req, res) => {
 });
 
 // fetch all the snippets inside the language collection :labg
-router.get ('/snippets/:lang', (req, res) => {
+router.get ('/getSnippets/:lang', (req, res) => {
     res.type ('json');
 
     var langName = req.params.lang;
@@ -94,6 +95,7 @@ router.get ('/lookup_lang/:languageType', function (req, res) {
     var languageType = req.params.languageType;
     if (languageType == null || languageType == '') {
         res.send ({status: 'error', message: 'No result'});
+        mongoose.disconnect ();
     } else {
         mongoose.Promise = es6Promise;
         mongoose.connect ('localhost', 'real-time');
@@ -101,8 +103,10 @@ router.get ('/lookup_lang/:languageType', function (req, res) {
         LanguageModule.findOne ({name: languageType}, function (err, rawData) {
             if (!err) {
                 res.send ({status: 'success', message: 'data found', raw: rawData});
+                mongoose.disconnect ();
             } else {
                 res.send ({status: 'error', message: 'server error'});
+                mongoose.disconnect ();
             }
         });
 
@@ -112,24 +116,29 @@ router.get ('/lookup_lang/:languageType', function (req, res) {
 
 // router to lookup all the languages in the database
 // returns the list of language names as array
+// CALL THIS TO GET THE ARRAY OF AVAILABLE LANGUAGES
 router.get ('/languages', (req, res) => {
     res.type ('json');
 
     mongoose.prommise = es6Promise;
-
     mongoose.connect (config.host, config.db);
 
     LanguageModule.find ({}, (err, rawData) => {
         if (!err) {
             if (rawData) {
                 var resData = [];
-                rawData.forEach ((obsolete, value, raw) => {
-                    resData.push (obsolete.name);
+                rawData.forEach ((actual, value, raw) => {
+                    var data = {
+                        name: actual.name,
+                        snippetsCount: actual.snippets.length
+                    };
+                    resData.push (data);
                 });
 
                 res.send ({status: 'success', data: resData});
                 mongoose.disconnect();
-            }
+            } else
+                res.send ({status: 'error', message: 'No data received'});
         } else {
             mongoose.disconnect ();
             res.send ({status:'error', message: 'server error'});
@@ -157,6 +166,7 @@ router.post ('/create/:languageName', function (req, res) {
         
         LanguageModule.findOne({name: language}, function (error, document) {
             if (error) {
+                mongoose.disconnect ();
                 res.send ({status: 'error', message: 'No snippet with this id'});
             } else {
                 if (document == null) {
@@ -191,14 +201,12 @@ router.post ('/create/:languageName', function (req, res) {
                         snippetText: newSnippet.snippet,
                         footnotes: new Array
                     });
-
                     document.save (function (err, row, affected) {
                         if (err) {
                              res.send ({status: 'error', message: 'error saving snippet'});  
                         } else {
                             res.send({status:'success', message: 'snippet has been saved'});
                         }
-
                         mongoose.disconnect();
                     });
                 }
@@ -219,9 +227,10 @@ router.put ('/update', function (req, res) {
     mongoose.connect ('localhost', 'real-time');
 
     LanguageModule.findOne({name: languageName}, function(error, data) {
-        if (error)
+        if (error) {
+            mongoose.disconnect ();
             res.send ({status: 'error', message: 'error finding the specified language'});
-        else {
+        } else {
             if (data != null) {
 
                 for (var i=0; i< data.snippets.length; i++) {
@@ -262,9 +271,10 @@ router.delete ('/delete_lang/:languageName', function (req, res) {
     mongoose.connect ('localhost', 'real-time');
 
     LanguageModule.findOne ({name: lang}, (err, doc) => {
-        if (err)
+        if (err) {
+            mongoose.disconnect ();
             res.send (eResponse('some server error occured'));
-        else {
+        } else {
             if (doc) {
 
                 var removeQuery = LanguageModule.remove ({name: lang});
@@ -292,9 +302,10 @@ router.delete ('/delete_snippet/:lang/:sId', (req, res) => {
     mongoose.connect ('localhost', 'real-time');
 
     LanguageModule.findOne ({name: lang}, (err, doc) => { 
-        if (err)
+        if (err) {
+            mongoose.disconnect ();
             res.send (eResponse('Server error'));
-        else {
+        } else {
             if (doc) {
                 var removeQuery = doc.snippets.remove ({_id: snippetId});
                 removeQuery.exec();
