@@ -1,0 +1,35 @@
+<ol class="breadcrumb">
+	<li ng-repeat='item in breadcrumbItems' ng-class="{{item == breadcrumbItems[breadcrumbItems.length-1] ? 'active' : ''}}">
+		<button  class='btn btn-link' ng-click='handleBreadcrumbs (item)'>{{item}}</button>
+	</li>
+</ol>
+<section class='container-fluid'>
+	<section class='well well-sm'>
+                <h4 class='text-center'>{{reqSnippet.snippetTitle}}</h4>
+            </section>
+            <section class='container-fluid'>
+                <section class='col-md-8'>
+                    <!--<label class='label label-primary'>Code snippet for Authenticating a user with cookies stored on the client side</label>
+                    <label class='label label-success'>Javascript</label>-->
+                     <pre>
+                        <code>
+{{reqSnippet.snippetText}}
+                        </code>
+                    </pre>
+
+                    <script>
+                    	$('pre code').each ((i, block) => {
+                    		hljs.highlightBlock (block);
+                    	});
+                    </script>
+                </section>
+
+                <section class='col-md-4 footnotes-section'>
+                    <h5 class='fn-head'>Footnotes</h3>
+
+                    <ul class='list-group'>
+                        <li class='list-group-item' ng-repeat='footnote in reqSnippet.footnotes'>{{footnote.text}}</li>
+                    </ul>
+                </section>
+            </section>
+</section>d
