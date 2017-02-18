@@ -8,7 +8,9 @@
     text-align: center;
     position: fixed;
     top: 0;
+    z-index: 999;
     width: 100%;
+    box-shadow: 0px 0px 10px 1px silver;
 }
 .card {
     transition: ease-in-out .25s all;
@@ -88,6 +90,11 @@
     width: 44px;    
     height: 44px;
     border-radius: 50%;
+}
+
+.footnotes-section {
+    padding: 10px;
+    border-radius: 3px;
 }
 
 .loader {

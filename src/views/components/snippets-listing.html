@@ -5,7 +5,7 @@
 </ol>
 <section class='container'>
 	<section class='row' ng-repeat='group in snippetsGroup'>
-		<section class='col-md-3 card' ng-repeat='snippet in group'>
+		<section class='col-md-3 card' ng-repeat='snippet in group' ng-click='showSnippet(snippet._id)'>
 			<section class='snippet-title-text'>
 				<p class='text-center'>{{snippet.snippetTitle}}</p>
 			</section>

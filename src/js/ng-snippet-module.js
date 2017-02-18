@@ -38,8 +38,22 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
                 url: '/api/snippets/getSnippets/'+ lang
             }). then (successCallback, errorCallback);;
          },
-        findSnippet: (lang, sID) => {},
-        /**
+         /*
+         *  This method will lookup for the individual snippet
+         *  under the language :lang and having snippet id
+         *  :sID. This will
+
+         *  GET /api/snippets/lookup_snippet/:lang/:sId
+         *  FETCH requested snippet in doc property of response
+         *  OR error message (if any)
+         */
+        findSnippet: (lang, sID, successCallback, errorCallback) => {
+            $http({
+                method: 'GET',
+                url: '/api/snippets/lookup_snippet/'+ lang +'/'+ sID 
+            }). then (successCallback, errorCallback);
+        },
+        /** 
          * supported doc format is
          * PUT /api/snippets/update
          * BODY
@@ -204,7 +218,26 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     // load the individual snippet
     // also update the breadcrumbs
     $scope.showSnippet = (id) => {
-        
+        var language = $scope.breadcrumbItems[1];
+        languageModuleService.findSnippet (language, id, (data) => {
+            var response = data.data;
+            if (response.status = 'success') {
+                devlogger.info (JSON.stringify(response.doc));
+
+                // update the content of .dynamic-content
+                // to show the requested snipped under :language
+                $scope.reqSnippet = response.doc;
+                getFileContent ('/component/snippet-content', (file) => {
+                    $('.dynamic-content').html ($compile (file)($scope));
+                    $scope.breadcrumbItems.push (response.doc.snippetTitle);
+                });
+
+            } else {
+                devlogger.error ('ERROR: '+ response.message);
+            }
+        }, (data)=> {
+            devlogger.error ('Error getting the data: '+ data);
+        });
     }
     
     // play the animation loading
@@ -227,6 +260,8 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     // START FROM HERE
     // creates a new snippetGroup
     $scope.newSnippet = (langName, title, snippet) => {
+
+        // alert (langName);
 
         _playLoading();
 
@@ -278,12 +313,20 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
 
         if (clickedIndex == 0) {
             // home
+            $scope.breadcrumbItems.splice (1, $scope.breadcrumbItems.length-1);
             showHome ();
         } else if (clickedIndex == 1) {
-            // home for specific language
+            // show home for specific language
+
+            // remove all thd breadcrumb items
+            var lang = $scope.breadcrumbItems[1];
+            $scope.breadcrumbItems.splice (1, $scope.breadcrumbItems.length-1);
+
+            $scope.showSnippetsFor (lang);
         } else if (clickedIndex == 2) {
             // reload the current page (this is the only situtation when a user
             // is in the exact same page that user requests)
+            // or do nothing
         }
     }
 }]);

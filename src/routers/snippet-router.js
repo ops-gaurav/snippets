@@ -12,7 +12,7 @@ var config = require ('../data/data');
 var LanguageModuleModel = require ('../schemas/language-module-model.js');
 var LanguageModule = mongoose.model ('snippets', LanguageModuleModel);
 /**
- * get all the snippets for type
+ * get all the snippets for typex
  * type maybe java,
  *  nodejs etc
  */
