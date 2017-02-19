@@ -5,14 +5,14 @@
 </ol>
 <section class='container'>
 	<section class='row' ng-repeat='group in languageGroup'>
-		<section class='col-md-3 card' ng-repeat='lang in group' ng-click='showSnippetsFor (lang.name)'>
-			<section class='card-text'>
+		<section class='col-md-3 card' ng-repeat='lang in group'>
+			<section class='card-text' ng-click='showSnippetsFor (lang.name)'>
 				<p class='text-center'>{{lang.name}}</p>
 				<b class='lang-sub text-center'>{{lang.snippetsCount}} Snippet(s)</b>
 
 				<section class='del-icon'>
-					<span class='glyphicon glyphicon-plus'></span>&nbsp;&nbsp;&nbsp;
-					<span class='glyphicon glyphicon-trash'></span>
+					<button class='btn btn-sm' onclick='alert ("add snippet");' ><span  class='glyphicon glyphicon-plus'></span></button>&nbsp;&nbsp;&nbsp;&nbsp;
+					<button class='btn btn-default btn-sm' onclick ='alert("delete language");'><span class='glyphicon glyphicon-trash'></span></button>
 				</section>
 			</section>
 		</section>

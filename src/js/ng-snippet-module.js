@@ -146,7 +146,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
                 lang: $scope.serialLanguages[0]
             };
 
-            devlogger.info ($scope.editorModel.lang, true);
+            //devlogger.info ($scope.editorModel.lang, true);
         } else {
             devlogger.error ('no response fetched'+ JSON.stringify(response), true);
         }
@@ -173,7 +173,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
 
     function showHome () {
         getFileContent ('/component/lang-homepage', (result) => {
-            devlogger.info (result);
+            //devlogger.info (result);
             $('.dynamic-content').html ($compile (result)($scope));
             for (var i=1; i< $scope.breadcrumbItems.length; i++)
                 $scope.breadcrumbItems.pop (i);
@@ -183,7 +183,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     // load the UI components for the lang module and 
     $scope.showSnippetsFor =  (language) => {
         getFileContent ('/component/snippets-listing', (result) => {
-            devlogger.info ('fetched');
+            //devlogger.info ('fetched');
             languageModuleService.getSnippets (language, (data) => {
                 var response = data.data;
                 if (response.status == 'success') {
@@ -201,7 +201,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
                     });
 
                     $scope.snippetsGroup.push (nestGroup);
-                    devlogger.info (JSON.stringify (response.data));
+                    //devlogger.info (JSON.stringify (response.data));
 
                     $('.dynamic-content').html ($compile (result)($scope));
                     $scope.breadcrumbItems.push (language);
@@ -214,7 +214,15 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         });
     }
 
-
+    /**
+    *   open the add snippet modal to add a new snippet for
+    *   the selected language. The language will be auto selected
+    *   in the dropdown options
+    */
+    $scope.triggerAddSnippetFor = (event, lang) => {
+        // prevent bubbling here... so that the card-text on click should
+        // not be invoked.
+    }
     // load the individual snippet
     // also update the breadcrumbs
     $scope.showSnippet = (id) => {
@@ -222,7 +230,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         languageModuleService.findSnippet (language, id, (data) => {
             var response = data.data;
             if (response.status = 'success') {
-                devlogger.info (JSON.stringify(response.doc));
+                //devlogger.info (JSON.stringify(response.doc));
 
                 // update the content of .dynamic-content
                 // to show the requested snipped under :language
@@ -242,7 +250,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     
     // play the animation loading
     function _playLoading () {
-        devlogger.info ('loading animation');
+        //devlogger.info ('loading animation');
         $('.abs-container-loading').css({display: 'block'});
         $('.abs-container-loading').animate ({
             opacity: 0
@@ -251,7 +259,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
 
     // stop the animation loading
     function _stopLoading () {
-        devlogger.info ('done loading');
+        // ('done loading');
         $('.abs-container-loading').animate ({opacity: 0}, 300, () => {
             $('.abs-container-loading').css ({display: 'none'});
         });
