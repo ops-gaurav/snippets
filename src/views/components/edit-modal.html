@@ -1,12 +1,21 @@
+<!-- 
+	aux variable
+	param1 is snippetId
+	param2 is dummy title
+	param3 is the snippet text
+
+	to be embedded into the HTML after angular compilation
+-->
 <section class="modal fade" id="edit-dialogue">
 	<section class="modal-dialog">
 		<section class="modal-content">
 			<section class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">{{aux.snippet.title}}</h4>
+				<h4 class="modal-title">{{aux.param2}}</h4>
 			</section>
 			<section class="modal-body">
-				{{aux.snippet.body}}
+				<input ng-value="aux.param2" class='form-control' placeholder="A description that describes this snippet"/> <br/>
+				<textarea ng-bind='aux.param3' class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
 			</section>
 			<section class="modal-footer">
 				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
@@ -14,4 +23,4 @@
 			</section>
 		</section>
 	</section>
-</section>
+</section>	

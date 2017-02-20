@@ -66,7 +66,17 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
          *      }
          * }
          */
-        updateSnippet: (doc) => {},
+        updateSnippet: (snippet) => {
+            var payload = {
+                targetLang: $scope.breadcrumbItems[1];
+                schemaId: doc._id,
+                snippet: doc
+            };
+            $http({
+                method: 'PUT',
+                url: '/api/snippets/update'
+            });
+        },
         /**
          * POST /api/snippets/create/:langName
          * BODY 
@@ -320,15 +330,18 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     *   show snippet editing options for snippet having snippet id
     *   sID under the language lang
     */
-    $scope.showEditDialogue = ($event, sId) => {
+    $scope.showEditDialogue = ($event, snippet) => {
         
-        $scope.aux.snippet = {};
+        $scope.aux = {};
 
+        const lang = $scope.breadcrumbItems[1];
         // init the content here
-        $scope.aux.snippet.title = "Dummy title";
-        $scope.aux.snippet.body = "This is snippet body";
+        $scope.aux.param1 = snippet._id;
+        $scope.aux.param2 = snippet.snippetTitle;
+        $scope.aux.param3 = snippet.snippetText;
 
         getFileContent ('/component/edit-modal', (file) => {
+
             $('.compiled-modal').html ($compile (file)($scope));
 
             $('#edit-dialogue').modal ({
@@ -338,6 +351,12 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         });
         $event.stopPropagation();
     }
+
+    // to be called via the update dialogue
+    // tp update the 
+    $scope.updateSnippet = (snippet) => {
+        languageModuleService.
+    };
 
     // play the animation loading
     function _playLoading () {
