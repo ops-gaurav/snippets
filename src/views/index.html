@@ -24,7 +24,7 @@
 		<link type='text/css' rel='stylesheet' href='/stylesheets/default.css'/>
 
 		<script>
-			$(document).ready (function (){
+			$(document).ready (function () {
                 hljs.initHighlightingOnLoad ();
             });
 		</script>
@@ -35,10 +35,11 @@
 		<header class='app-navbar'>
 			<img alt="Brand" src="./img/snippet.png" height=30>
 		</header>
+
 		<br/><br/><br/><br/>
 
 		<section class='container'>
-			<a class='btn btn-success btn-sm' data-toggle='modal' href='#create-modal'>
+			<a class='btn btn-success btn-sm' data-backdrop='static' data-keyboard='false' data-toggle='modal' href='#create-modal'>
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; New snippet
 			</a><br/><br/>
 
@@ -47,18 +48,18 @@
 			</section>
 		</section>
 
-		<div class="modal fade" id="create-modal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
+		<section class="modal fade" id="create-modal">
+			<section class="modal-dialog">
+				<section class="modal-content">
+					<section class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title">Add new Snippet</h4>
-					</div>
-					<div class="modal-body">
+					</section>
+					<section class="modal-body">
 						<!-- show a dropdown to list the number of languages and 
 						one another option to add a new language
 						-->
-						<div class="btn-group" role="group">
+						<section class="btn-group" role="group">
 							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Select Language: <b ng-bind='editorModel.lang'></b>
 								<span class="caret"></span>
@@ -70,21 +71,60 @@
 								</li>
 								<li ng-click='setEditorLang ("Add new")'><a href="#"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create new</a></li>
 							</ul>
-						</div><br/><br/>
+						</section><br/><br/>
 						<input ng-model='editorModel.lang' class='form-control' value='editorModel.lang' placeholder="Enter new language" ng-hide='editorModel.lang == undefined' /><br/>
 						<input ng-model='title' class='form-control' placeholder="A description that describes this snippet"/> <br/>
 						<textarea ng-model='snippet' class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
-					</div>
-					<div class="modal-footer">
+					</section>
+					<section class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
 						<!--  push to server-->
 						<button type="button" class="btn btn-primary btn-sm" ng-click='newSnippet(editorModel.lang, title, snippet)'>Create</button>
 						<p class='create-info text-center'></p>
+					</section>
+				</section>
+			</section>
+		</section>
+
+		<section class="modal fade" id="delete-prompt-modal">
+			<section class="modal-dialog">
+				<section class="modal-content">
+					<section class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Are you sure you want to delete {{aux.param1}} ?</h4>
+					</section>
+					<section class="modal-body">
+						This will delete the language {{aux.param1}} permanently and all it's snippets.
+					</section>
+					<section class="modal-footer">
+						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
+						<button type="button" class="btn btn-danger btn-sm" ng-click='deleteLang (aux.param1)'>Confirm</button>
+					</section>
+				</section>
+			</section>
+		</section>
+
+		<section class="modal fade" id="delete-success">
+			<section class="modal-dialog">
+				<section class="modal-content">
+					<section class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Success deleting {{aux.param1}}</h4>
+					</section>
+				</section>
+			</section>
+		</section>
+
+		<div class="modal fade" id="delete-error">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Error deleting {{aux.param1}}</h4>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<!-- show loading-->
 		<section class='abs-container-loading'>
 				<section class="loader-container"><p class="loader"></p></section>

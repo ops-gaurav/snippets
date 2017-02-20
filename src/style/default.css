@@ -45,9 +45,11 @@
     color: #769064;
     display: block;
 }
-.del-icon {
+.card-icons {
     position: absolute;
     right: 0;
+    bottom: 0;
+    margin-bottom: 3px;
     margin-right: 10px;
 }
 .snippet-title-text {
@@ -130,4 +132,15 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+}
+
+.link-btn {
+    background: none;
+    color: #4B7C6D;
+    transition: all .25s ease-in-out;
+    -webkit-transition: all .25s ease-in-out;
+    -moz-transition: all .25s ease-in-out;
+}
+.link-btn:hover {
+    border: solid 1px #C9C6C1;
 }

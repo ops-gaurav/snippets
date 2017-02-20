@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app='langModule'>
+	<head>
+		<meta charset='UTF-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
+		<title>Your title goes here</title>
+
+		<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' type='text/css' rel='stylesheet'>
+		<script src='https://code.jquery.com/jquery-3.1.1.min.js' integrity='sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=' crossorigin='anonymous'></script>
+		<script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
+		<!--angular js include-->
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.9/angular.min.js' type='text/javascript'></script>
+		<!-- font awesome CDN-->
+		<!--<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' type='text/css' rel='stylesheet' />-->
+
+		<!--using an angular logging service developed by me -->
+		<script type='text/javascript' src='https://rawgit.com/sharma02gaurav/ng-dev-logger/master/ng-dev-module.js'></script>
+		<script type='text/javascript' src='/script/ng-snippet-module.js'></script>
+		<link type='text/css' rel='stylesheet' href='/stylesheets/default.css'/>
+	</head>
+
+	<body ng-controller='LangModuleController'>
+		<nav class="navbar navbar-default navbar-fixed-top app-navbar">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">
+						<img alt="Brand" src="./img/snippet.png" height=30>
+					</a>
+				</div>
+			</div>
+		</nav>
+		<br/><br/><br/><br/>
+
+		<section class='container'>
+
+			<a class='btn btn-success btn-sm' data-toggle='modal' href='#create-modal'>
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; New snippet
+			</a><br/><br/>
+
+			<ol class="breadcrumb">
+
+				<li ng-repeat='item in breadcrumbItems' ng-class="{{item == breadcrumbItems[breadcrumbItems.length-1] ? 'active' : ''}}">
+					<a href="#">{{item}}</a>
+				</li>
+			</ol>
+
+			<section class='dynamic-content'>
+				<section class='container'>
+					<section class='row' ng-repeat='group in languageGroup'>
+						<section class='col-md-3 card' ng-repeat='lang in group'>
+							<section class='card-text' ng-click='showSnippetsFor(lang)'>
+								<p class='text-center'>{{lang}}</p>
+							</section>
+						</section>
+					</section>
+				</section>
+			</section>
+		</section>
+
+
+		<!--<a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Trigger modal</a>-->
+		<div class="modal fade" id="create-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Create new language</h4>
+					</div>
+					<div class="modal-body">
+						<!-- show a dropdown to list the number of languages and 
+						one another option to add a new language
+						-->
+						<div class="btn-group" role="group" ng-init='selected=serialLanguages[0]'>
+							<button type="button" ng-bind='selected' class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Language: <b ng-bind='selected'></b>
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li ng-repeat='lang in serialLanguages'><a href='#' >{{lang}}</a></li>
+								<li><a href="#">Create new</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
+						<button type="button" class="btn btn-primary btn-sm">Create</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

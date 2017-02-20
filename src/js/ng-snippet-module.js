@@ -96,7 +96,12 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
         /**
          * DELETE /api/snippets/delete_lang/:langName
          */
-        deleteLang: (lang) => {},
+        deleteLang: (lang, successCallback, errorCallback) => {
+            $http ({
+                method: 'DELETE',
+                url: '/api/snippets/delete_lang/'+ lang
+            }).then (successCallback, errorCallback);;
+        },
         /**
          * DELETE /api/snippets/delete_snippet/:lang/:sId
          */
@@ -115,6 +120,9 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     $scope.languageGroup = [];
     $scope.serialLanguages = [];
     $scope.breadcrumbItems = ['Languages'];
+
+    // an auxilary variable to store temporary values
+    $scope.aux = {};
 
     showHome();
 
@@ -201,7 +209,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
                     });
 
                     $scope.snippetsGroup.push (nestGroup);
-                    //devlogger.info (JSON.stringify (response.data));
+                    //devlogger.info (  JSON.stringify (response.data));
 
                     $('.dynamic-content').html ($compile (result)($scope));
                     $scope.breadcrumbItems.push (language);
@@ -219,9 +227,71 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     *   the selected language. The language will be auto selected
     *   in the dropdown options
     */
-    $scope.triggerAddSnippetFor = (event, lang) => {
+    $scope.triggerAddSnippetFor = ($event, lang) => {
         // prevent bubbling here... so that the card-text on click should
         // not be invoked.
+        $('#create-modal').modal ({
+            backdrop: 'static',
+            keyboard: false
+        });
+        $scope.editorModel.lang = lang; 
+
+        $event.stopPropagation();
+    }
+
+    /**
+    *   trigger this to delete the particular language
+    */
+    $scope.triggerDeleteLanguage = ($event, lang) => {
+        $scope.aux.param1 = lang;
+
+        $('#delete-prompt-modal').modal ({
+            backdrop: 'static',
+            keyboard: false
+        });
+        $event.stopPropagation ();
+    }
+
+    // action on confirming the delete option
+    $scope.deleteLang = (lang) => {
+        languageModuleService.deleteLang (lang, (data) =>{
+            // success callback
+            var response = data.data;
+            if (response.status == 'success') {
+                
+                $('#delete-prompt-modal').modal ('hide');
+                $('#delete-success').modal ({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                setTimeout (() => {
+                    $('#delete-success').modal ('hide'); 
+                    location.reload();
+                }, 3000);
+
+            } else {
+                $('#delete-prompt-modal').modal ('hide');
+                $('#delete-error').modal ({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                setTimeout (() => {
+                    $('#delete-error').modal ('hide');
+                    location.reload();
+                }, 3000);
+            }
+        }, (data) => {
+            // error callback
+            $('#delete-prompt-modal').modal ('hide');
+            $('#delete-error').modal ({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            setTimeout (() => {
+                $('#delete-error').modal ('hide');
+                location.reload();  
+            }, 3000);
+        });
     }
     // load the individual snippet
     // also update the breadcrumbs

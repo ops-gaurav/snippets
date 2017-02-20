@@ -10,9 +10,9 @@
 				<p class='text-center'>{{lang.name}}</p>
 				<b class='lang-sub text-center'>{{lang.snippetsCount}} Snippet(s)</b>
 
-				<section class='del-icon'>
-					<button class='btn btn-sm' onclick='alert ("add snippet");' ><span  class='glyphicon glyphicon-plus'></span></button>&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class='btn btn-default btn-sm' onclick ='alert("delete language");'><span class='glyphicon glyphicon-trash'></span></button>
+				<section class='card-icons'>
+					<button class='btn btn-sm link-btn' ng-click='triggerAddSnippetFor ($event, lang.name)' ><span  class='glyphicon glyphicon-plus'></span></button>
+					<button class='btn btn-sm link-btn' ng-click='triggerDeleteLanguage ($event, lang.name)'><span class='glyphicon glyphicon-trash'></span></button>
 				</section>
 			</section>
 		</section>
