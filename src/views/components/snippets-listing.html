@@ -8,7 +8,17 @@
 		<section class='col-md-3 card' ng-repeat='snippet in group' ng-click='showSnippet(snippet._id)'>
 			<section class='snippet-title-text'>
 				<p class='text-center'>{{snippet.snippetTitle}}</p>
+
+				<section class='card-icons'>
+					<button class='btn btn-sm link-btn' ng-click='showEditDialogue($event, snippet._id)' data-toggle='tooltip' title='Edit snippet'><span  class='glyphicon glyphicon-edit'></span></button>
+					<button class='btn btn-sm link-btn' ng-click='' data-toggle='tooltip' title='Delete snippet'><span class='glyphicon glyphicon-trash'></span></button>
+				</section>
 			</section>
 		</section>
 	</section>
-</section>d
+</section>
+
+<section class='compiled-modal'>
+<!-- push the compiled modal in here-->
+
+</section>

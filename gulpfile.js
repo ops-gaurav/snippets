@@ -33,18 +33,10 @@ gulp.task ('server', () => {
 			script: './src/server.js',
 			ext: 'js'
 		}).on ('restart', () => {
-			gulp.src ('./src/server.js')
+			gulp.src ('.`/src/server.js')
 				.pipe (livereload())
 				.pipe (notify ('Reloading Snippets.. Hold on...'));
 		});
-	});
-});
-
-gulp.task ('mongod-dev', () => {
-	exec ('sudo mongod', (err, stdout, stderr) => {
-		console.log (err);
-		console.log (stdout);
-		console.log (stderr);
 	});
 });
 

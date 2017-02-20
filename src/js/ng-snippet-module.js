@@ -174,9 +174,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         });
     }
 
-    $scope.setEditorLang = (lang) => {
-        $scope.editorModel.lang = lang;
-    }
+    $scope.setEditorLang = (lang) => $scope.editorModel.lang = lang;
 
 
     function showHome () {
@@ -318,6 +316,29 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
         });
     }
     
+    /*
+    *   show snippet editing options for snippet having snippet id
+    *   sID under the language lang
+    */
+    $scope.showEditDialogue = ($event, sId) => {
+        
+        $scope.aux.snippet = {};
+
+        // init the content here
+        $scope.aux.snippet.title = "Dummy title";
+        $scope.aux.snippet.body = "This is snippet body";
+
+        getFileContent ('/component/edit-modal', (file) => {
+            $('.compiled-modal').html ($compile (file)($scope));
+
+            $('#edit-dialogue').modal ({
+                backdrop: 'static',
+                keyboard: false
+            });
+        });
+        $event.stopPropagation();
+    }
+
     // play the animation loading
     function _playLoading () {
         //devlogger.info ('loading animation');

@@ -11,8 +11,8 @@
 				<b class='lang-sub text-center'>{{lang.snippetsCount}} Snippet(s)</b>
 
 				<section class='card-icons'>
-					<button class='btn btn-sm link-btn' ng-click='triggerAddSnippetFor ($event, lang.name)' ><span  class='glyphicon glyphicon-plus'></span></button>
-					<button class='btn btn-sm link-btn' ng-click='triggerDeleteLanguage ($event, lang.name)'><span class='glyphicon glyphicon-trash'></span></button>
+					<button class='btn btn-sm link-btn' ng-click='triggerAddSnippetFor ($event, lang.name)' data-toggle='tooltip' title='Add new snippet'><span  class='glyphicon glyphicon-plus'></span></button>
+					<button class='btn btn-sm link-btn' ng-click='triggerDeleteLanguage ($event, lang.name)' data-toggle='tooltip' title='Delete language'><span class='glyphicon glyphicon-trash' ></span></button>
 				</section>
 			</section>
 		</section>
