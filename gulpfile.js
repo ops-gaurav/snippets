@@ -1,8 +1,11 @@
-var gulp = require ('gulp');
-var sass = require ('gulp-sass');
-var minify = require ('gulp-minify');
-var clean = require ('gulp-clean');
-var uglify = require ('gulp-uglify');
+var gulp = require ('gulp'),
+	sass = require ('gulp-sass'),
+	minify = require ('gulp-minify'),
+	clean = require ('gulp-clean'),
+	exec = require ('child_process').exec,
+	nodemon = require ('gulp-nodemon'),
+	livereload = require ('gulp-livereload'),
+	notify = require ('gulp-notify');
 
 gulp.task ('test-system', () => {
     console.log ('system is up and running..');
@@ -18,6 +21,32 @@ gulp.task ('build-stylesheets', () => {
         .pipe (gulp.dest ('./build/css'));
 });
 
+/**
+* Real time server with auto update and reloading
+*/
+gulp.task ('server', () => {
+	gulp.task ('server', () => {
+		// the gulp will watch over all the js files and realod 
+		// the app as soon as the changes are detected in the system
+		livereload.listen ();
+		nodemon ({
+			script: './src/server.js',
+			ext: 'js'
+		}).on ('restart', () => {
+			gulp.src ('./src/server.js')
+				.pipe (livereload())
+				.pipe (notify ('Reloading Snippets.. Hold on...'));
+		});
+	});
+});
+
+gulp.task ('mongod-dev', () => {
+	exec ('sudo mongod', (err, stdout, stderr) => {
+		console.log (err);
+		console.log (stdout);
+		console.log (stderr);
+	});
+});
 
 //https://www.npmjs.com/package/gulp-minify
 // minify the javascript files and stylesheets and html files]
