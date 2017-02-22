@@ -11,16 +11,16 @@
 		<section class="modal-content">
 			<section class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">{{aux.param2}}</h4>
+				<h4 class="modal-title" ng-bind="aux.snippet.snippetTitle"></h4>
 			</section>
 			<section class="modal-body">
-				<input ng-value="aux.param2" class='form-control' placeholder="A description that describes this snippet"/> <br/>
-				<textarea ng-bind='aux.param3' class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
+				<input ng-model='aux.snippet.snippetTitle' ng-value="aux.snippet.snippetTitle" class='form-control' placeholder="A description that describes this snippet"/> <br/>
+				<textarea ng-model='aux.snippet.snippetText' ng-value="aux.snippet.snippetText" class='form-control code-edit' id='code-input' placeholder="Enter your code snippet here" style='resize: none; height: 300px;'></textarea>
 			</section>
 			<section class="modal-footer">
 				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary btn-sm">Update</button>
+				<button type="button" class="btn btn-primary btn-sm" ng-click='updateSnippet (aux.snippet)'>Update</button>
 			</section>
 		</section>
 	</section>
-</section>	
+</section>

@@ -223,6 +223,10 @@ router.put ('/update', function (req, res) {
     var schemaId = req.body.schemaId;
     var newSnippet = req.body.snippet;
 
+    console.log (languageName);
+    console.log (schemaId);
+    console.log (newSnippet);
+
     mongoose.Promise = es6Promise;
     mongoose.connect ('localhost', 'real-time');
 
@@ -233,25 +237,18 @@ router.put ('/update', function (req, res) {
         } else {
             if (data != null) {
 
-                for (var i=0; i< data.snippets.length; i++) {
-                    var doc = data.snippets[i];
-                    console.log (doc);
+                var requestedDocument = data.snippets.id (schemaId);
+                if (requestedDocument) {
+                    requestedDocument.snippetTitle = newSnippet.title;
+                    requestedDocument.snippetText = newSnippet.snippet;
+
+                    console.log (requestedDocument);
                 }
-
-                data.snippets.forEach (function (value, index) {
-                    if (value._id == schemaId) {
-                        value.snippetTitle = newSnippet.title;
-                        value.snippetText = newSnippet.snippet;
-                        console.log (value);
-                    }
-                });
-
                 data.save (function (error, row, affected) {
                     if (error) 
                         res.send ({status:'error', message: 'Error updating snippet'});
                     else 
                         res.send ({status:'success', message: 'snippet updated'});
-
                     mongoose.disconnect();
                 });
             } else {

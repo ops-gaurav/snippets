@@ -3,7 +3,7 @@ var langModule = angular.module ('langModule', ['devmodule']);
 /**
  * Language module factory containing services related to api calls
  */
-langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($http, devlogger) {
+ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($http, devlogger) {
     return {
         listLanguages: (successCallback, errorCallback) => {
             $http({
@@ -15,7 +15,7 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
          * find a language
          * GET /lookup_lang/:langType
          */
-        findLang: (langName) => {
+         findLang: (langName) => {
             $http ({
                 method: 'GET',
                 url: '/api/snippets/lookup_lang/:'+ langName
@@ -37,7 +37,7 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
                 method: 'GET',
                 url: '/api/snippets/getSnippets/'+ lang
             }). then (successCallback, errorCallback);;
-         },
+        },
          /*
          *  This method will lookup for the individual snippet
          *  under the language :lang and having snippet id
@@ -47,7 +47,7 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
          *  FETCH requested snippet in doc property of response
          *  OR error message (if any)
          */
-        findSnippet: (lang, sID, successCallback, errorCallback) => {
+         findSnippet: (lang, sID, successCallback, errorCallback) => {
             $http({
                 method: 'GET',
                 url: '/api/snippets/lookup_snippet/'+ lang +'/'+ sID 
@@ -66,16 +66,12 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
          *      }
          * }
          */
-        updateSnippet: (snippet) => {
-            var payload = {
-                targetLang: $scope.breadcrumbItems[1];
-                schemaId: doc._id,
-                snippet: doc
-            };
+         updateSnippet: (snippetData, successCallback, errorCallback) => {
             $http({
                 method: 'PUT',
-                url: '/api/snippets/update'
-            });
+                url: '/api/snippets/update',
+                data: snippetData
+            }).then (successCallback, errorCallback);
         },
         /**
          * POST /api/snippets/create/:langName
@@ -87,7 +83,7 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
          *      }
          * }
          */
-        createSnippet: (lang, successCallbak, errorCallback) => {
+         createSnippet: (lang, successCallbak, errorCallback) => {
             var payload = {
                 snippet: {
                     title: lang.title,
@@ -106,7 +102,7 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
         /**
          * DELETE /api/snippets/delete_lang/:langName
          */
-        deleteLang: (lang, successCallback, errorCallback) => {
+         deleteLang: (lang, successCallback, errorCallback) => {
             $http ({
                 method: 'DELETE',
                 url: '/api/snippets/delete_lang/'+ lang
@@ -115,16 +111,16 @@ langModule.factory ('languageModuleService', ['$http', 'devlogger', function ($h
         /**
          * DELETE /api/snippets/delete_snippet/:lang/:sId
          */
-        deleteSnippet: (lang, sId) => {}
-    };
-}]);
+         deleteSnippet: (lang, sId) => {}
+     };
+ }]);
 
 
 /**
  * controller for langugae based actions
  */
-langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageModuleService', 'devlogger', function ($scope, $compile, languageModuleService, devlogger){
-    
+ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageModuleService', 'devlogger', function ($scope, $compile, languageModuleService, devlogger){
+
     // the grid contains the items as columns of 4 => 4 languages in a row.
     // to make results iterable in angularJS, adding them in the group of 4 items as array in an array
     $scope.languageGroup = [];
@@ -266,7 +262,7 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
             // success callback
             var response = data.data;
             if (response.status == 'success') {
-                
+
                 $('#delete-prompt-modal').modal ('hide');
                 $('#delete-success').modal ({
                     backdrop: 'static',
@@ -292,9 +288,9 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
             // error callback
             $('#delete-prompt-modal').modal ('hide');
             $('#delete-error').modal ({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                backdrop: 'static',
+                keyboard: false
+            });
             setTimeout (() => {
                 $('#delete-error').modal ('hide');
                 location.reload();  
@@ -331,14 +327,12 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     *   sID under the language lang
     */
     $scope.showEditDialogue = ($event, snippet) => {
-        
+
         $scope.aux = {};
 
         const lang = $scope.breadcrumbItems[1];
         // init the content here
-        $scope.aux.param1 = snippet._id;
-        $scope.aux.param2 = snippet.snippetTitle;
-        $scope.aux.param3 = snippet.snippetText;
+        $scope.aux.snippet = snippet;
 
         getFileContent ('/component/edit-modal', (file) => {
 
@@ -355,7 +349,55 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
     // to be called via the update dialogue
     // tp update the 
     $scope.updateSnippet = (snippet) => {
-        languageModuleService.
+        //languageModuleService.
+        var reqDocument = {};
+        reqDocument = {
+            targetLang: $scope.breadcrumbItems[1],
+            schemaId: snippet._id,
+            snippet: {
+                title: snippet.snippetTitle,
+                snippet: snippet.snippetText
+            }
+        };
+        
+        getFileContent ('/component/alert-dialogue',(file) => {
+            languageModuleService.updateSnippet (reqDocument, (successData) =>{
+                var response = successData.data;
+                $('#edit-dialogue').modal ('hide');
+
+                if (response.status == 'success') {
+                    $scope.aux.param1 = "Document edited successfully";
+                }else {
+                    $scope.aux.param1 = "Snippet not edited";
+                }
+
+                $('.misc-modal').html ($compile (file)($scope));
+
+                $('#alert-modal').modal ({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                setTimeout (() => {
+                    $('#alert-modal').modal ('hide');
+
+                    $scope.handleBreadcrumbs(1);
+                }, 3000);
+
+            }, (errorData) => {
+                $scope.aux.param1 = "Cannot connoct with server";
+                $('.compiled-modal').html ($compile (file)($scope));
+                $('#alert-modal').modal ({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                setTimeout (() => {
+                    $('#alert-modal').modal ('hide');
+
+                    $scope.handleBreadcrumbs(1);
+                }, 3000);
+            });
+        });
     };
 
     // play the animation loading
@@ -412,15 +454,15 @@ langModule.controller ('LangModuleController', ['$scope', '$compile', 'languageM
 
             $('.create-info').html ('Error connecting with server');
             setTimeout (() => {
-                    $('#create-modal').modal ('hide');
-                    location.reload ();
-                }, 2000);
+                $('#create-modal').modal ('hide');
+                location.reload ();
+            }, 2000);
         });
     }
 
     // handle the page navigation of breadcrumbs
     $scope.handleBreadcrumbs = (clicked) => {
-        var clikedIndex = -1;
+        var clickedIndex = -1;
 
         $scope.breadcrumbItems.map ((value, index) => {
             if (value == clicked) {
