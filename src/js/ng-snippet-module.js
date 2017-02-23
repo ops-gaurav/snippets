@@ -111,7 +111,12 @@ var langModule = angular.module ('langModule', ['devmodule']);
         /**
          * DELETE /api/snippets/delete_snippet/:lang/:sId
          */
-         deleteSnippet: (lang, sId) => {}
+         deleteSnippet: (lang, sId, sCallback, eCallback) => {
+            $http ({
+                method: 'DELETE',
+                url: '/api/snippets/delete_snippet/'+ lang +'/' +sId
+            }).then (sCallback, eCallback);;
+         }
      };
  }]);
 
@@ -199,6 +204,7 @@ var langModule = angular.module ('langModule', ['devmodule']);
             languageModuleService.getSnippets (language, (data) => {
                 var response = data.data;
                 if (response.status == 'success') {
+                    devlogger.info ("Success getting snippets for "+ language+ " "+ response.data.length +' items found');
                     $scope.snippetsGroup = [];
 
                     var nestGroup = [];
@@ -212,11 +218,17 @@ var langModule = angular.module ('langModule', ['devmodule']);
                         }
                     });
 
-                    $scope.snippetsGroup.push (nestGroup);
-                    //devlogger.info (  JSON.stringify (response.data));
-
-                    $('.dynamic-content').html ($compile (result)($scope));
-                    $scope.breadcrumbItems.push (language);
+                    if (nestGroup.length != 0)
+                        $scope.snippetsGroup.push (nestGroup);
+                    if ($scope.snippetsGroup.length == 0) {
+                        getFileContent ('/component/no-data', (data) => {
+                            $('.dynamic-content').html ($compile (data)($scope));
+                            $scope.breadcrumbItems.push (language);
+                        })
+                    } else {
+                        $('.dynamic-content').html ($compile (result)($scope));
+                        $scope.breadcrumbItems.push (language);
+                    }
                 }
                 else
                     devlogger.error ('Error : '+ response.message);
@@ -400,6 +412,63 @@ var langModule = angular.module ('langModule', ['devmodule']);
         });
     };
 
+    $scope.triggerDeleteSnippet = ($event, snippet) => {
+        $scope.aux.param1 =  snippet.snippetTitle;
+        $scope.aux.param2 = snippet._id;
+
+        $('#deleteSnippet-prompt-modal').modal ({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        $event.stopPropagation();
+    }
+
+    /**
+    *   call this funtion when the user confirms the delete option
+    */
+    $scope.deleteSnippet = (sId) => {
+        var lang = $scope.breadcrumbItems[1];
+
+        languageModuleService.deleteSnippet (lang, sId, (sData) => {
+            $('#deleteSnippet-prompt-modal').modal ('hide');
+            var response = sData.data;
+            if (response.status == 'success') {
+                $('#delete-success').modal ({
+                    backdrop: 'static',
+                    kayboard: false
+                });
+
+                setTimeout (() => {
+                    $('#delete-success').modal ('hide'); 
+                    $scope.handleBreadcrumbs (lang);
+                }, 3000);
+            } else {
+                devlogger.error ('error');
+                $('#delete-prompt-modal').modal ('hide');
+                $('#delete-error').modal ({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                setTimeout (() => {
+                    $('#delete-error').modal ('hide');
+                    $scope.handleBreadcrumbs (lang);
+                }, 3000);
+            }
+        },(eData) => {
+            // error callback
+            devlogger.error ('server error');
+            $('#delete-error').modal ({
+                backdrop: 'static',
+                keyboard: false
+            });
+            setTimeout (() => {
+                $('#delete-error').modal ('hide');
+                $scope.handleBreadcrumbs (lang);  
+            }, 3000);
+        });
+    }
+
     // play the animation loading
     function _playLoading () {
         //devlogger.info ('loading animation');
@@ -474,7 +543,8 @@ var langModule = angular.module ('langModule', ['devmodule']);
         if (clickedIndex == 0) {
             // home
             $scope.breadcrumbItems.splice (1, $scope.breadcrumbItems.length-1);
-            showHome ();
+            location.reload();
+            // showHome ();
         } else if (clickedIndex == 1) {
             // show home for specific language
 

@@ -304,11 +304,14 @@ router.delete ('/delete_snippet/:lang/:sId', (req, res) => {
             res.send (eResponse('Server error'));
         } else {
             if (doc) {
-                var removeQuery = doc.snippets.remove ({_id: snippetId});
-                removeQuery.exec();
-
-                res.send (sResponse ('deleted the snippet#'+ snippetId +' of '+ lang));
-                mongoose.disconnect();
+                doc.snippets.id (snippetId).remove ();
+                doc.save ((err) => {
+                    if (err)
+                        res.send (eResponse ("error deleting"));
+                    else 
+                        res.send (sResponse ('deleted the snippet#'+ snippetId +' of '+ lang));
+                    mongoose.disconnect();
+                });
             } else {
                 mongoose.disconnect();
                 res.send (eResponse ('cannot find language '+ lang));

@@ -11,7 +11,7 @@
 
 				<section class='card-icons'>
 					<button class='btn btn-sm link-btn' ng-click='showEditDialogue($event, snippet)' data-toggle='tooltip' title='Edit snippet'><span  class='glyphicon glyphicon-edit'></span></button>
-					<button class='btn btn-sm link-btn' ng-click='' data-toggle='tooltip' title='Delete snippet'><span class='glyphicon glyphicon-trash'></span></button>
+					<button class='btn btn-sm link-btn' ng-click='triggerDeleteSnippet($event, snippet)' data-toggle='tooltip' title='Delete snippet'><span class='glyphicon glyphicon-trash'></span></button>
 				</section>
 			</section>
 		</section>
@@ -19,7 +19,25 @@
 </section>
 
 <section class='compiled-modal'>
-<!-- push the compiled modal in here-->
+	<!-- push the compiled modal in here-->
 </section>
 
 <section class='misc-modal'></section>
+
+<section class="modal fade" id="deleteSnippet-prompt-modal">
+	<section class="modal-dialog">
+		<section class="modal-content">
+			<section class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Are you sure you want to delete {{aux.param1}} snippet ?</h4>
+			</section>
+			<section class="modal-body">
+				This will delete the snippet <em>&quot;{{aux.param1}}&quot;</em> permanently.
+			</section>
+			<section class="modal-footer">
+				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Dismiss</button>
+				<button type="button" class="btn btn-danger btn-sm" ng-click='deleteSnippet (aux.param2)'>Confirm</button>
+			</section>
+		</section>
+	</section>
+</section>

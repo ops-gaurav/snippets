@@ -1,0 +1,6 @@
+<ol class="breadcrumb">
+	<li ng-repeat='item in breadcrumbItems' ng-class="{{item == breadcrumbItems[breadcrumbItems.length-1] ? 'active' : ''}}">
+		<button  class='btn btn-link' ng-click='handleBreadcrumbs (item)'>{{item}}</button>
+	</li>
+</ol>
+<p class='text-center'>No data found</p>
