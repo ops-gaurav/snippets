@@ -187,7 +187,6 @@ var langModule = angular.module ('langModule', ['devmodule']);
 
     $scope.setEditorLang = (lang) => $scope.editorModel.lang = lang;
 
-
     function showHome () {
         getFileContent ('/component/lang-homepage', (result) => {
             //devlogger.info (result);
